@@ -2,6 +2,27 @@
 <head>
 	<title>Don's Test!</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, target-densitydpi=medium-dpi, user-scalable=1" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<!--<script>
+		$(document).ready(function () {
+			$("#tdHeader").text("Nope");
+			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+				console.log("Root = " + fs.root.fullPath);
+				var directoryReader = fs.root.createReader();
+				directoryReader.readEntries(function (entries) {
+					var i;
+					for (i = 0; i < entries.length; i++) {
+						$("#tSoundList").append("<tr><td>" + entries[i].name + "</td></tr>");
+
+					}
+				}, function (error) {
+					alert(error.code);
+				})
+			}, function (error) {
+				alert(error.code);
+			});
+		});
+	</script>-->
 	<script type="text/javascript">
 
 		// Wait for PhoneGap to load
@@ -10,8 +31,26 @@
 
 		// PhoneGap is ready
 		//
+
 		function onDeviceReady() {
-			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
+			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+				$("#tdHeader").text("Nope");
+				$("#tSoundList").append("<tr><td>This is a test</td></tr>");
+				console.log("Root = " + fs.root.fullPath);
+				var directoryReader = fs.root.createReader();
+				directoryReader.readEntries(function (entries) {
+					var i;
+					for (i = 0; i < entries.length; i++) {
+						$("#tdHeader").text(entries[i].name);
+						$("#tSoundList").append("<tr><td>" + entries[i].name + "</td></tr>");
+
+					}
+				}, function (error) {
+					alert(error.code);
+				})
+			}, function (error) {
+				alert(error.code);
+			});
 		}
 
 		function onFileSystemSuccess(fileSystem) {
@@ -26,15 +65,14 @@
 	</script>
 	<style type="text/css">
 		audio {
-			width: 99%;
+			width: 100%;
 		}
 	</style>
 </head>
 <body>
-	<table style="border-collapse: collapse; width: 100%; border: 1px solid #AAA">
+	<table id="tSoundList" style="border-collapse: collapse; width: 100%; border: 1px solid #AAA">
 		<tr>
-			<td>Heyoo!</td>
-			<td></td>
+			<td id="tdHeader">Heyoo</td>
 		</tr>
 		<tr>
 			<td>
