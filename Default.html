@@ -1,0 +1,52 @@
+<html>
+<head>
+	<title>Don's Test!</title>
+	<script type="text/javascript">
+
+		// Wait for PhoneGap to load
+		//
+		document.addEventListener("deviceready", onDeviceReady, false);
+
+		// PhoneGap is ready
+		//
+		function onDeviceReady() {
+			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
+		}
+
+		function onFileSystemSuccess(fileSystem) {
+			console.log(fileSystem.name);
+			console.log(fileSystem.root.name);
+		}
+
+		function fail(evt) {
+			console.log(evt.target.error.code);
+		}
+
+	</script>
+</head>
+<body>
+	<table style="border-collapse: collapse;">
+		<tr>
+			<td>Heyoo!</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<audio autoplay loop controls>
+					<source src="street-traffic-1.mp3" type="audio/mp3" />
+					Your BOWSER doesn't support the MARIO element.
+				</audio>
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<audio autoplay loop controls>
+					<source src="bus-interior-2.mp3" type="audio/mp3" />
+				</audio>
+			</td>
+			<td></td>
+		</tr>
+	</table>
+</body>
+</html>
