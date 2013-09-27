@@ -1,6 +1,7 @@
 <html>
 <head>
 	<title>Don's Test!</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, target-densitydpi=medium-dpi, user-scalable=1" />
 	<script type="text/javascript">
 
 		// Wait for PhoneGap to load
@@ -23,9 +24,14 @@
 		}
 
 	</script>
+	<style type="text/css">
+		audio {
+			width: 99%;
+		}
+	</style>
 </head>
 <body>
-	<table style="border-collapse: collapse;">
+	<table style="border-collapse: collapse; width: 100%; border: 1px solid #AAA">
 		<tr>
 			<td>Heyoo!</td>
 			<td></td>
@@ -33,19 +39,17 @@
 		<tr>
 			<td>
 				<audio autoplay loop controls>
-					<source src="street-traffic-1.mp3" type="audio/mp3" />
+					<source src="Sounds/street-traffic-1.mp3" type="audio/mp3" />
 					Your BOWSER doesn't support the MARIO element.
 				</audio>
 			</td>
-			<td></td>
 		</tr>
 		<tr>
 			<td>
 				<audio autoplay loop controls>
-					<source src="bus-interior-2.mp3" type="audio/mp3" />
+					<source src="Sounds/bus-interior-2.mp3" type="audio/mp3" />
 				</audio>
 			</td>
-			<td></td>
 		</tr>
 	</table>
 </body>
