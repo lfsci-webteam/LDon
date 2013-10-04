@@ -35,13 +35,11 @@
 
 		function onDeviceReady() {
 			$("#tSoundList").append("<tr><td>This is a test</td></tr>");
-			window.webkitRequestFileSystem(window.TEMPORARY, 0, filestuff(fs), function (error) {//LocalFileSystem.PERSISTENT
-				alert(error.code);
-			});
+			$("#tdHeader").text("Before");
+			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
 		}
 
 		function filestuff(fs) {
-			alert("Entered filestuff");
 			console.log("Root = " + fs.root.fullPath);
 			var directoryReader = fs.root.createReader();
 			directoryReader.readEntries(function (entries) {
@@ -56,6 +54,21 @@
 			})
 		}
 
+		function dispErr(error) {
+			alert(error.code);
+		}
+
+		function onFileSystemSuccess(fileSystem) {
+			$("#tdHeader").text("Success");
+			console.log(fileSystem.name);
+			console.log(fileSystem.root.name);
+		}
+
+		function fail(evt) {
+			$("#tdHeader").text("Failure");
+			console.log(evt.target.error.code);
+		}
+
 	</script>
 	<style type="text/css">
 		audio {
@@ -65,6 +78,24 @@
 </head>
 <body>
 	<table id="tSoundList" style="border-collapse: collapse; width: 100%; border: 1px solid #AAA">
+		<tr>
+			<td id="tdHeader">No Value Set</td>
+		</tr>
+		<tr>
+			<td>
+				<audio autoplay loop controls>
+					<source src="Sounds/street-traffic-1.mp3" type="audio/mp3" />
+					Your BOWSER doesn't support the MARIO element.
+				</audio>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<audio autoplay loop controls>
+					<source src="Sounds/bus-interior-2.mp3" type="audio/mp3" />
+				</audio>
+			</td>
+		</tr>
 	</table>
 </body>
 </html>
