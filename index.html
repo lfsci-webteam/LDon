@@ -35,7 +35,7 @@
 
 		function onDeviceReady() {
 			$("#tSoundList").append("<tr><td>This is a test</td></tr>");
-			window.webkitRequestFileSystem(window.TEMPORARY, 0, filestuff(fs), function (error) {//LocalFileSystem.PERSISTENT
+			window.webkitRequestFileSystem(LocalFileSystem.PERSISTENT, 0, filestuff(fs), function (error) {//window.TEMPORARY
 				alert(error.code);
 			});
 		}
