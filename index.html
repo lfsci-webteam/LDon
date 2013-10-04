@@ -36,19 +36,18 @@
 		function onDeviceReady() {
 			$("#tSoundList").append("<tr><td>This is a test</td></tr>");
 			alert("onDeviceReady()");
-			window.webkitRequestFileSystem(LocalFileSystem.PERSISTENT, 0, filestuff(fs), function (error) {//window.TEMPORARY
+			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, filestuff(fs), function (error) {//window.TEMPORARY
 				alert(error.code);
 			});
 		}
 
 		function filestuff(fs) {
 			alert("filestuff");
-			console.log("Root = " + fs.root.fullPath);
+			$("#tSoundList").append("<tr><td>" + fs.root.fullPath + "</td></tr>");
 			var directoryReader = fs.root.createReader();
 			directoryReader.readEntries(function (entries) {
 				var i;
 				for (i = 0; i < entries.length; i++) {
-					$("#tdHeader").text(entries[i].name);
 					$("#tSoundList").append("<tr><td>" + entries[i].name + "</td></tr>");
 
 				}
