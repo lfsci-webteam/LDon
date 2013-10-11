@@ -29,19 +29,51 @@
 		var width = screen.width
 		var height = screen.height
 
-		function Record(inTime, inPrice) {
+		function Record(inTime, inPrice, inName) {
 			this.purchaseTime = inTime;
 			this.purchasePrice = inPrice;
+			this.name = inName;
 			this.fees = 0;
 			this.saleTime = null;
 			this.salePrice = null;
 		}
 
 		$(document).ready(function () {
+			records.push(new Record(new Date(), 1000, "Old Rusty Shoe"));
+			records.push(new Record(new Date(), 2000, "Two Old Rusty Shoes"));
+			records.push(new Record(new Date(), 2000, "New Rusty Shoe"));
+			records.push(new Record(new Date(), 2000, "Ancient Shiny Shoe"));
+			records.push(new Record(new Date(), 2000, "Leather Shoe"));
+			records.push(new Record(new Date(), 2000, "Impossible Shoe"));
+			records.push(new Record(new Date(), 2000, "Useful Shoe"));
+			records.push(new Record(new Date(), "64-bit Integer Overflow Error", "Kevin's Beard"));
+			UpdateTable();
 			$("#btnAddRecord").click(function () {
-				$("#divList").slideToggle("slow");
+				switch ($("#btnAddRecord").text()) {
+					case "Add New Record":
+						$("#btnAddRecord .ui-btn-text").text("Submit");
+						$("#divDetails").slideDown();
+						break;
+					case "Submit":
+						if ($("#inName").val() != "")
+							records.push(new Record(new Date(), parseInt($("#inPrice").val()), $("#inName").val()));
+						UpdateTable();
+						$("#inPrice").val("");
+						$("#inName").val("");
+						$("#btnAddRecord .ui-btn-text").text("Add New Record");
+						$("#divDetails").slideUp();
+						break;
+				}
+				//$("#divDetails").slideToggle();
 			});
 		});
+
+		function UpdateTable() {
+			$("#tblRecords").empty();
+			for (i = 0; i < records.length; i++) {
+				$("#tblRecords").append("<tr><td>" + records[i].name + "</td><td>" + records[i].purchasePrice + "</tr>")
+			}
+		}
 
 		//function doOnOrientationChange() {
 		//	switch (window.orientation) {
@@ -58,9 +90,9 @@
 		//window.addEventListener('orientationchange', doOnOrientationChange);
 	</script>
 	<style type="text/css">
-		.actionButton {
-			width: 100%;
-			height: 50px;
+		#divDetails {
+			display: none;
+			margin: 10px;
 		}
 
 		#divAdd {
@@ -68,10 +100,12 @@
 			bottom: 0px;
 			margin: 0 auto;
 			width: 100%;
+			background-color: #FFF;
+			border: 1px solid #AAA;
 		}
 
 		#divList {
-			max-height: 400px;
+			height: 400px;
 			overflow-y: scroll;
 			overflow-x: hidden;
 			border: 1px solid #AAA;
@@ -79,93 +113,24 @@
 	</style>
 </head>
 <body>
-	<h1>GW2 Gold Tracker</h1>
-	<div id="divList">
-		List
-	<ul>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-		<li>Fun!</li>
-	</ul>
+	<h1>GW2 Finances</h1>
+	<table id="tblRecords">
+		<tr>
+			<td></td>
+		</tr>
+	</table>
+	<div style="height: 100px">
+		&nbsp;
 	</div>
 	<div id="divAdd">
+		<div id="divDetails">
+			Item Name:
+			<input id="inName" type="text" />
+			Price:
+			<input id="inPrice" type="text" />
+		</div>
 		<!--<button id="btnAddRecord" class="actionButton">Add New</button>-->
-		<a id="btnAddRecord" data-role="button">Toggle List</a>
+		<a id="btnAddRecord" style="margin: 10px" data-role="button">Add New Record</a>
 	</div>
-
 </body>
 </html>
