@@ -38,9 +38,8 @@
 		}
 
 		$(document).ready(function () {
-			//alert(width + "x" + height)
-			$("#btnRecord").click(function () {
-
+			$("#btnAddRecord").click(function () {
+				$("#divList").slideToggle("slow");
 			});
 		});
 
@@ -67,17 +66,105 @@
 		#divAdd {
 			position: fixed;
 			bottom: 0px;
-			/*height: 20px;*/
 			margin: 0 auto;
 			width: 100%;
+		}
+
+		#divList {
+			max-height: 400px;
+			overflow-y: scroll;
+			overflow-x: hidden;
+			border: 1px solid #AAA;
 		}
 	</style>
 </head>
 <body>
 	<h1>GW2 Gold Tracker</h1>
-	<div id="divList">List</div>
+	<div id="divList">
+		List
+	<ul>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+		<li>Fun!</li>
+	</ul>
+	</div>
 	<div id="divAdd">
-		<button id="btnAddRecord" class="actionButton">Add New</button>
+		<!--<button id="btnAddRecord" class="actionButton">Add New</button>-->
+		<a id="btnAddRecord" data-role="button">Toggle List</a>
 	</div>
 
 </body>
