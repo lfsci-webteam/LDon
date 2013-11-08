@@ -7,12 +7,10 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<title></title>
 
-
-
 	<link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css">
 
 	<!-- Extra Codiqa features -->
-	<link rel="stylesheet" href="codiqa.ext.css">
+	<link rel="stylesheet" href="css/codiqa.ext.css">
 
 	<!-- jQuery and jQuery Mobile -->
 	<script src="js/jquery-1.9.1.min.js"></script>
@@ -21,8 +19,11 @@
 	<!-- Extra Codiqa features -->
 	<script src="js/codiqa2.ext.js"></script>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, target-densitydpi=medium-dpi, user-scalable=1" />
+	<!-- PhoneGap -->
 	<script type="text/javascript" src="phonegap.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, target-densitydpi=medium-dpi, user-scalable=1" />
+
 	<script>
 		var records = new Array();
 
@@ -38,16 +39,70 @@
 			this.salePrice = null;
 		}
 
+		document.addEventListener("deviceready", onDeviceReady, false);
+
+		function onDeviceReady() {
+			var db = window.openDatabase("test", "1.0", "Test DB", 1000000);
+			db.transaction(populateDB, errorCB, successCB);
+		}
+
+		// Transaction error callback
+		//
+		function errorCB(tx, err) {
+			console.log("Error processing SQL: " + err);
+		}
+
+		// Transaction success callback
+		//
+		function successCB() {
+			console.log("Success!");
+		}
+
+		// Populate the database 
+		//
+		function populateDB(tx) {
+			//tx.executeSql('DROP TABLE IF EXISTS Records');
+			tx.executeSql('CREATE TABLE IF NOT EXISTS Records (id Integer PRIMARY KEY AUTOINCREMENT, purchaseTime datetime, purchasePrice int, name varchar(255), fees int, saleTime datetime, salePrice int)');
+			UpdateTable(tx);
+		}
+
+		function addRecord(purchasePrice, name) {
+			function addSql(tx) {
+				console.log((new Date()).toString())
+				var query = 'INSERT INTO Records (purchaseTime, purchasePrice, name, fees, saleTime, salePrice) VALUES (?, ?, ?, 0, 0, 0)';
+				tx.executeSql(query, [(new Date()).toString(), purchasePrice, name.toString()]);
+				UpdateTable(tx);
+			}
+			var db = window.openDatabase("test", "1.0", "Test DB", 1000000);
+			db.transaction(addSql, errorCB, successCB);
+		}
+
+		function UpdateTable(tx) {
+			$("#tblRecords").empty();
+			tx.executeSql('SELECT * FROM Records', [], updateSuccess, errorCB);
+		}
+
+		function updateSuccess(tx, results) {
+			var len = results.rows.length;
+			console.log("table: " + len + " rows found.");
+			for (var i = 0; i < len; i++) {
+				$("#tblRecords").append("<tr><td class=\"IDCell\">" + results.rows.item(i).id + "</td><td width=\"70%\">" + results.rows.item(i).name + "</td><td width=\"30%\">" +
+										results.rows.item(i).purchasePrice + "</td><td><a class=\"btnDelete\">Delete</a></tr>")
+			}
+			$(".btnDelete").click(function () {
+				var id = $(this).closest('tr').find(".IDCell").text();
+				function deleteRow(tx) {
+					var query = 'DELETE FROM Records WHERE id = ?;';
+
+					tx.executeSql(query, [id]);
+					UpdateTable(tx);
+				}
+				var db = window.openDatabase("test", "1.0", "Test DB", 1000000);
+				db.transaction(deleteRow, errorCB, successCB);
+			});
+		}
+
 		$(document).ready(function () {
-			records.push(new Record(new Date(), 1000, "Old Rusty Shoe"));
-			records.push(new Record(new Date(), 2000, "Two Old Rusty Shoes"));
-			records.push(new Record(new Date(), 2000, "New Rusty Shoe"));
-			records.push(new Record(new Date(), 2000, "Ancient Shiny Shoe"));
-			records.push(new Record(new Date(), 2000, "Leather Shoe"));
-			records.push(new Record(new Date(), 2000, "Impossible Shoe"));
-			records.push(new Record(new Date(), 2000, "Useful Shoe"));
-			records.push(new Record(new Date(), "64-bit Integer Overflow Error", "Kevin's Beard"));
-			UpdateTable();
 			$("#btnAddRecord").click(function () {
 				switch ($("#btnAddRecord").text()) {
 					case "Add New Record":
@@ -56,24 +111,15 @@
 						break;
 					case "Submit":
 						if ($("#inName").val() != "")
-							records.push(new Record(new Date(), parseInt($("#inPrice").val()), $("#inName").val()));
-						UpdateTable();
+							addRecord(parseInt($("#inPrice").val()), $("#inName").val());
 						$("#inPrice").val("");
 						$("#inName").val("");
 						$("#btnAddRecord .ui-btn-text").text("Add New Record");
 						$("#divDetails").slideUp();
 						break;
 				}
-				//$("#divDetails").slideToggle();
 			});
 		});
-
-		function UpdateTable() {
-			$("#tblRecords").empty();
-			for (i = 0; i < records.length; i++) {
-				$("#tblRecords").append("<tr><td>" + records[i].name + "</td><td>" + records[i].purchasePrice + "</tr>")
-			}
-		}
 
 		//function doOnOrientationChange() {
 		//	switch (window.orientation) {
@@ -109,6 +155,14 @@
 			overflow-y: scroll;
 			overflow-x: hidden;
 			border: 1px solid #AAA;
+		}
+
+		.IDCell {
+			display: none;
+		}
+
+		.DeleteRow {
+			color: blue;
 		}
 	</style>
 </head>
