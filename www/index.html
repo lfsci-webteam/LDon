@@ -18,123 +18,13 @@
 
 	<!-- Extra Codiqa features -->
 	<script src="js/codiqa2.ext.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
 
 	<!-- PhoneGap -->
 	<script type="text/javascript" src="phonegap.js"></script>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, target-densitydpi=medium-dpi, user-scalable=1" />
 
-	<script>
-		var records = new Array();
-
-		var width = screen.width
-		var height = screen.height
-
-		function Record(inTime, inPrice, inName) {
-			this.purchaseTime = inTime;
-			this.purchasePrice = inPrice;
-			this.name = inName;
-			this.fees = 0;
-			this.saleTime = null;
-			this.salePrice = null;
-		}
-
-		document.addEventListener("deviceready", onDeviceReady, false);
-
-		function onDeviceReady() {
-			var db = window.openDatabase("test", "1.0", "Test DB", 1000000);
-			db.transaction(populateDB, errorCB, successCB);
-		}
-
-		// Transaction error callback
-		//
-		function errorCB(tx, err) {
-			console.log("Error processing SQL: " + err);
-		}
-
-		// Transaction success callback
-		//
-		function successCB() {
-			console.log("Success!");
-		}
-
-		// Populate the database 
-		//
-		function populateDB(tx) {
-			//tx.executeSql('DROP TABLE IF EXISTS Records');
-			tx.executeSql('CREATE TABLE IF NOT EXISTS Records (id Integer PRIMARY KEY AUTOINCREMENT, purchaseTime datetime, purchasePrice int, name varchar(255), fees int, saleTime datetime, salePrice int)');
-			UpdateTable(tx);
-		}
-
-		function addRecord(purchasePrice, name) {
-			function addSql(tx) {
-				console.log((new Date()).toString())
-				var query = 'INSERT INTO Records (purchaseTime, purchasePrice, name, fees, saleTime, salePrice) VALUES (?, ?, ?, 0, 0, 0)';
-				tx.executeSql(query, [(new Date()).toString(), purchasePrice, name.toString()]);
-				UpdateTable(tx);
-			}
-			var db = window.openDatabase("test", "1.0", "Test DB", 1000000);
-			db.transaction(addSql, errorCB, successCB);
-		}
-
-		function UpdateTable(tx) {
-			$("#tblRecords").empty();
-			tx.executeSql('SELECT * FROM Records', [], updateSuccess, errorCB);
-		}
-
-		function updateSuccess(tx, results) {
-			var len = results.rows.length;
-			console.log("table: " + len + " rows found.");
-			for (var i = 0; i < len; i++) {
-				$("#tblRecords").append("<tr><td class=\"IDCell\">" + results.rows.item(i).id + "</td><td width=\"70%\">" + results.rows.item(i).name + "</td><td width=\"30%\">" +
-										results.rows.item(i).purchasePrice + "</td><td><a class=\"btnDelete\">Delete</a></tr>")
-			}
-			$(".btnDelete").click(function () {
-				var id = $(this).closest('tr').find(".IDCell").text();
-				function deleteRow(tx) {
-					var query = 'DELETE FROM Records WHERE id = ?;';
-
-					tx.executeSql(query, [id]);
-					UpdateTable(tx);
-				}
-				var db = window.openDatabase("test", "1.0", "Test DB", 1000000);
-				db.transaction(deleteRow, errorCB, successCB);
-			});
-		}
-
-		$(document).ready(function () {
-			$("#btnAddRecord").click(function () {
-				switch ($("#btnAddRecord").text()) {
-					case "Add New Record":
-						$("#btnAddRecord .ui-btn-text").text("Submit");
-						$("#divDetails").slideDown();
-						break;
-					case "Submit":
-						if ($("#inName").val() != "")
-							addRecord(parseInt($("#inPrice").val()), $("#inName").val());
-						$("#inPrice").val("");
-						$("#inName").val("");
-						$("#btnAddRecord .ui-btn-text").text("Add New Record");
-						$("#divDetails").slideUp();
-						break;
-				}
-			});
-		});
-
-		//function doOnOrientationChange() {
-		//	switch (window.orientation) {
-		//		case -90:
-		//		case 90:
-		//			$("#divList").height(width - 125);
-		//			break;
-		//		default:
-		//			$("#divList").height(height - 125);
-		//			break;
-		//	}
-		//}
-
-		//window.addEventListener('orientationchange', doOnOrientationChange);
-	</script>
 	<style type="text/css">
 		#divDetails {
 			display: none;
@@ -167,7 +57,7 @@
 	</style>
 </head>
 <body>
-	<h1>GW2 Finances</h1>
+	<h1>Finances</h1>
 	<table id="tblRecords">
 		<tr>
 			<td></td>
@@ -184,6 +74,7 @@
 			<input id="inPrice" type="text" />
 		</div>
 		<!--<button id="btnAddRecord" class="actionButton">Add New</button>-->
+		<input id="hidUpdateID" type="hidden" value="-1" />
 		<a id="btnAddRecord" style="margin: 10px" data-role="button">Add New Record</a>
 	</div>
 </body>
